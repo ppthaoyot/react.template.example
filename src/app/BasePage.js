@@ -7,14 +7,16 @@ import DashboardPage from "./pages/DashboardPage";
 import TokenHandler from "./modules/Auth/components/TokenHandler";
 import { ROLES } from "../Constants";
 import Alert from "./modules/_Demo/Alert";
-import Test from  './pages/Test'
-import ReduxDemo from './modules/_Demo/pages/ReduxDemo'
-import WithTextField from './modules/_FormikDemo/pages/WithTextField'
+import Test from "./pages/Test";
+import ReduxDemo from "./modules/_Demo/pages/ReduxDemo";
+import WithTextField from "./modules/_FormikDemo/pages/WithTextField";
 import WithCheckboxAndRadio from "./modules/_FormikDemo/pages/WithCheckboxAndRadio";
 import WithDropdown from "./modules/_FormikDemo/pages/WithDropdown";
 import WithDatePicker from "./modules/_FormikDemo/pages/WithDatePicker";
-import NewEmployee from './modules/_EmployeeDemo/pages/NewEmployee'
-import EmployeeList from './modules/_EmployeeDemo/pages/EmployeeList'
+import NewEmployee from "./modules/_EmployeeDemo/pages/NewEmployee";
+import EmployeeList from "./modules/_EmployeeDemo/pages/EmployeeList";
+
+import ProductGroupPage from "./modules/ProductGroup/pages/ProductGroupPage";
 
 export default function BasePage(props) {
   // useEffect(() => {
@@ -32,22 +34,30 @@ export default function BasePage(props) {
         <ContentRoute exact path="/alert" component={Alert} />
         <ContentRoute exact path="/reduxDemo" component={ReduxDemo} />
         <ContentRoute exact path="/withTextField" component={WithTextField} />
-        <ContentRoute exact path="/withCheckboxAndRadio" component={WithCheckboxAndRadio} />
+        <ContentRoute
+          exact
+          path="/withCheckboxAndRadio"
+          component={WithCheckboxAndRadio}
+        />
         <ContentRoute exact path="/withDropdown" component={WithDropdown} />
         <ContentRoute exact path="/withDatePicker" component={WithDatePicker} />
         <ContentRoute exact path="/employee/" component={EmployeeList} />
         <ContentRoute exact path="/employee/new" component={NewEmployee} />
         <ContentRoute exact path="/employee/edit/:id" component={NewEmployee} />
-        <PrivateRoute exact path="/test" roles={[ROLES.admin,ROLES.developer]} component={Test} />
+
+        <ContentRoute exact path="/productgroup" component={ProductGroupPage} />
+        <PrivateRoute
+          exact
+          path="/test"
+          roles={[ROLES.admin, ROLES.developer]}
+          component={Test}
+        />
         {/* End Demo part สามารถ comment ได้ */}
 
-        <Route
-          path="/errorUnAuthorized"
-          component={ErrorUnAuthorized}
-        />
+        <Route path="/errorUnAuthorized" component={ErrorUnAuthorized} />
 
         {/* nothing match - redirect to error */}
-        <Redirect to="/error"/>
+        <Redirect to="/error" />
       </Switch>
       <TokenHandler></TokenHandler>
     </Suspense>

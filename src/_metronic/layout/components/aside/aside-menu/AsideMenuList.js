@@ -297,10 +297,22 @@ export function AsideMenuList({ layoutProps }) {
             </NavLink>
           </li>
           {/*End::1 Employee List*/}
+
+          {/*Product Group*/}
+          <li
+            className={`menu-item ${getMenuItemActive("/productgroup", false)}`}
+            aria-haspopup="true"
+          >
+            <NavLink className="menu-link" to="/productgroup">
+              <span className="svg-icon menu-icon">
+                <Icon>supervisor_account</Icon>
+              </span>
+              <span className="menu-text">Product Group</span>
+            </NavLink>
+          </li>
+          {/*End::1 Product Group*/}
         </>
         {/* End Demo สามารถ comment ทิ้งได้ */}
-
-        
       </ul>
       {/* end::Menu Nav */}
     </Hoc>

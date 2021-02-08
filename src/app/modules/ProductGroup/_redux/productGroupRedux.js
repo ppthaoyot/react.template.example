@@ -2,17 +2,12 @@ require("dayjs/locale/th");
 var dayjs = require("dayjs");
 dayjs.locale("th");
 
-//http://uat.siamsmile.co.th:9188/swagger/index.html
-//https://json-to-js.com/
-// action type บอกว่า Redux ตัวนี้ สามารถทำอะไรได้บ้าง
 export const actionTypes = {
-  // ADD_PLAYER: '[Add player] Action',
   SET_CURRENTPAGE: "[SET_CURRENTPAGE] Action",
   UPDATE_CURRENT_EMPLOYEE: "[UPDATE_CURRENT_EMPLOYEE] Action",
   RESET_EMPLOYEE: "[RESET_EMPLOYEE] Action",
 };
 
-// state ค่าที่ถูกเก็บไว้
 const initialState = {
   currentPage: 0,
   currentEmployeeToAdd: {
@@ -35,7 +30,6 @@ const initialState = {
   },
 };
 
-// reducer แต่ละ Action จะไป update State อย่างไร
 export const reducer = (state = initialState, action) => {
   switch (action.type) {
     case actionTypes.SET_CURRENTPAGE: {
@@ -59,7 +53,6 @@ export const reducer = (state = initialState, action) => {
   }
 };
 
-//action เอาไว้เรียกจากข้างนอก เพื่อเปลี่ยน state
 export const actions = {
   setCurrentPage: (payload) => ({ type: actionTypes.SET_CURRENTPAGE, payload }),
   updateCurrentEmployee: (payload) => ({
