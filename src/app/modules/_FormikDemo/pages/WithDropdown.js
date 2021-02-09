@@ -93,11 +93,11 @@ function WithDropdown() {
             </Grid>
             <Grid item xs={12} lg={6}>
               <DropdownTitle
-                  touched={touched}
-                  values={values}
-                  errors={errors}
-                  name="t2"
-                  label="Title2"
+                touched={touched}
+                values={values}
+                errors={errors}
+                name="t2"
+                label="Title2"
               ></DropdownTitle>
             </Grid>
 

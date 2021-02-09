@@ -234,7 +234,7 @@ export function AsideMenuList({ layoutProps }) {
           </li> */}
 
           {/*begin::1 withDropdown*/}
-          {/* <li
+          <li
             className={`menu-item ${getMenuItemActive("/withDropdown", false)}`}
             aria-haspopup="true"
           >
@@ -244,7 +244,7 @@ export function AsideMenuList({ layoutProps }) {
               </span>
               <span className="menu-text">Formik Dropdown</span>
             </NavLink>
-          </li> */}
+          </li>
 
           {/*begin::1 withDatePicker*/}
           {/* <li

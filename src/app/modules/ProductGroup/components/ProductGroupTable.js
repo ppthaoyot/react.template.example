@@ -3,13 +3,21 @@
 import React from "react";
 import MUIDataTable from "mui-datatables";
 import { makeStyles } from "@material-ui/core/styles";
-import { Grid, Typography, CircularProgress, Chip } from "@material-ui/core";
+import {
+  Grid,
+  Typography,
+  CircularProgress,
+  Chip,
+  Card,
+  CardContent,
+} from "@material-ui/core";
 import { Block, CheckCircle } from "@material-ui/icons";
 import * as productGroupAxios from "../_redux/productGroupAxios";
 import * as swal from "../../Common/components/SweetAlert";
 import DeleteButton from "../../Common/components/Buttons/DeleteButton";
 import EditButton from "../../Common/components/Buttons/EditButton";
 import ProductGroupSearch from "./ProductGroupSearch";
+import ProductGroupAdd from "../components/ProductGroupAdd";
 
 var flatten = require("flat");
 require("dayjs/locale/th");
@@ -23,7 +31,7 @@ function ProductGroupTable(props) {
     orderingField: "",
     ascendingOrder: true,
     searchValues: {
-      pgName: "",
+      name: "",
     },
   });
 
@@ -71,6 +79,16 @@ function ProductGroupTable(props) {
       page: 1,
       searchValues: values,
     });
+  };
+
+  const handleReload = (values) => {
+    if (values) {
+      setFilter({
+        ...filter,
+        page: 1,
+        searchValues: { name: "" },
+      });
+    }
   };
 
   const columns = [
@@ -197,7 +215,7 @@ function ProductGroupTable(props) {
         filter.ascendingOrder,
         filter.page,
         filter.recordsPerPage,
-        filter.searchValues.pgName
+        filter.searchValues.name
       )
       .then((res) => {
         if (res.data.isSuccess) {
@@ -209,6 +227,8 @@ function ProductGroupTable(props) {
             });
             setData(flatData);
             console.log(flatData);
+          } else {
+            setData(res.data.data);
           }
           setTotalRecords(res.data.totalAmountRecords);
         } else {
@@ -234,38 +254,82 @@ function ProductGroupTable(props) {
     count: totalRecords,
     page: filter.page - 1,
     rowsPerPage: filter.recordsPerPage,
-    onTableChange: (action, tableState) => {
-      switch (action) {
-        case "changePage":
-          setFilter({ ...filter, page: tableState.page + 1 });
-          break;
-        case "sort":
-          setFilter({
-            ...filter,
-            orderingField: `${tableState.sortOrder.name}`,
-            ascendingOrder:
-              tableState.sortOrder.direction === "asc" ? true : false,
-          });
-          break;
-        case "changeRowsPerPage":
-          setFilter({
-            ...filter,
-            recordsPerPage: tableState.rowsPerPage,
-          });
-          break;
-        default:
-          console.log(`action not handled. [${action}]`);
+    searchPlaceholder: "กรอกข้อมูลอย่างน้อย 3 ตัวอักษร..",
+    onChangePage: (currentPage) => {
+      setFilter({ ...filter, page: currentPage + 1 });
+    },
+    onChangeRowsPerPage: (numberOfRows) => {
+      setFilter({ ...filter, recordsPerPage: numberOfRows });
+    },
+    onSearchChange: (searchText) => {
+      let search = searchText ? searchText : "";
+      if (search.length >= 3) {
+        setFilter({ ...filter, searchText: search });
       }
     },
+    onColumnSortChange: (changedColumn, direction) => {
+      setFilter({
+        ...filter,
+        orderingField: changedColumn,
+        ascendingOrder: direction === "asc" ? true : false,
+      });
+    },
+    // onTableChange: (action, tableState) => {
+    //   debugger;
+    //   switch (action) {
+    //     case "changePage":
+    //       setFilter({ ...filter, page: tableState.page + 1 });
+    //       break;
+    //     case "sort":
+    //       setFilter({
+    //         ...filter,
+    //         orderingField: `${tableState.sortOrder.name}`,
+    //         ascendingOrder:
+    //           tableState.sortOrder.direction === "asc" ? true : false,
+    //       });
+    //       break;
+    //     case "changeRowsPerPage":
+    //       setFilter({
+    //         ...filter,
+    //         recordsPerPage: tableState.rowsPerPage,
+    //       });
+    //       break;
+    //     default:
+    //     //  console.log(`action not handled. [${action}]`);
+    //   }
+    // },
   };
 
   return (
     <div>
       {/* search */}
-      <ProductGroupSearch
-        submit={handleSearch.bind(this)}
-        // submit={setSearchValues.bind(this)}
-      ></ProductGroupSearch>
+      <Card elevation={3} style={{ marginBottom: 5 }}>
+        <CardContent>
+          <Grid container spacing={3}>
+            <Grid item xs={12} lg={6}>
+              <ProductGroupSearch
+                submit={handleSearch.bind(this)}
+              ></ProductGroupSearch>
+            </Grid>
+            <Grid
+              container
+              item
+              xs={12}
+              lg={6}
+              direction="row"
+              justify="flex-start"
+              alignItems="flex-end"
+            >
+              <Grid item xs={12} lg={2}>
+                <ProductGroupAdd
+                  submit={handleReload.bind(this)}
+                ></ProductGroupAdd>
+              </Grid>
+            </Grid>
+          </Grid>
+        </CardContent>
+      </Card>
+
       <MUIDataTable
         title={
           <Typography variant="h6">

@@ -12,9 +12,9 @@ const initialState = {
   currentPage: 0,
   currentProductGroupToAdd: {
     name: "",
-    createdBy: "",
+    createdBy: "2",
     createdDate: dayjs(),
-    updatedBy: "",
+    updatedBy: "2",
     updatedDate: dayjs(),
     isActive: true,
   },
