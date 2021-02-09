@@ -4,29 +4,19 @@ dayjs.locale("th");
 
 export const actionTypes = {
   SET_CURRENTPAGE: "[SET_CURRENTPAGE] Action",
-  UPDATE_CURRENT_EMPLOYEE: "[UPDATE_CURRENT_EMPLOYEE] Action",
-  RESET_EMPLOYEE: "[RESET_EMPLOYEE] Action",
+  UPDATE_CURRENT_PRODUCTGROUP: "[UPDATE_CURRENT_PRODUCTGROUP] Action",
+  RESET_PRODUCTGROUP: "[RESET_PRODUCTGROUP] Action",
 };
 
 const initialState = {
   currentPage: 0,
-  currentEmployeeToAdd: {
-    titleId: 0,
-    employeeCode: "",
-    firstName: "",
-    lastName: "",
-    identityCardNo: "",
-    dateOfBirth: dayjs(),
-    address1: "",
-    address2: "",
-    subDistrictId: 0,
-    postCode: "",
-    genderId: "0",
-    hobbies: [],
+  currentProductGroupToAdd: {
+    name: "",
+    createdBy: "",
+    createdDate: dayjs(),
+    updatedBy: "",
+    updatedDate: dayjs(),
     isActive: true,
-    employee_provinceId: 0,
-    employee_districtId: 0,
-    employee_subDistrictId: 0,
   },
 };
 
@@ -36,14 +26,14 @@ export const reducer = (state = initialState, action) => {
       return { ...state, currentPage: action.payload };
     }
 
-    case actionTypes.UPDATE_CURRENT_EMPLOYEE: {
-      return { ...state, currentEmployeeToAdd: action.payload };
+    case actionTypes.UPDATE_CURRENT_PRODUCTGROUP: {
+      return { ...state, currentProductGroupToAdd: action.payload };
     }
 
-    case actionTypes.RESET_EMPLOYEE: {
+    case actionTypes.RESET_PRODUCTGROUP: {
       return {
         ...state,
-        currentEmployeeToAdd: initialState.currentEmployeeToAdd,
+        currentProductGroupToAdd: initialState.currentProductGroupToAdd,
         currentPage: 0,
       };
     }
@@ -54,10 +44,15 @@ export const reducer = (state = initialState, action) => {
 };
 
 export const actions = {
-  setCurrentPage: (payload) => ({ type: actionTypes.SET_CURRENTPAGE, payload }),
-  updateCurrentEmployee: (payload) => ({
-    type: actionTypes.UPDATE_CURRENT_EMPLOYEE,
+  setCurrentPage: (payload) => ({
+    type: actionTypes.SET_CURRENTPAGE,
     payload,
   }),
-  resetCurrentEmployee: () => ({ type: actionTypes.RESET_EMPLOYEE }),
+  updateCurrentProductGroup: (payload) => ({
+    type: actionTypes.UPDATE_CURRENT_PRODUCTGROUP,
+    payload,
+  }),
+  resetCurrentProductGroup: () => ({
+    type: actionTypes.RESET_PRODUCTGROUP,
+  }),
 };

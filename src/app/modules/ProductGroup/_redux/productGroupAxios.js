@@ -20,3 +20,21 @@ export const getProductGroup = (Id) => {
 export const getProductGroupAll = () => {
   return axios.get(`${PRODUCTGROUP_URL}/all`);
 };
+
+export const getProductGroupFilter = (
+  orderingField,
+  ascendingOrder,
+  page,
+  recordsPerPage,
+  name
+) => {
+  debugger;
+  let payload = {
+    page,
+    recordsPerPage,
+    orderingField,
+    ascendingOrder,
+    name,
+  };
+  return axios.get(encodeURLWithParams(`${PRODUCTGROUP_URL}/filter`, payload));
+};

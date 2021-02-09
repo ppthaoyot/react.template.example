@@ -2,14 +2,14 @@
 /* eslint-disable no-restricted-imports */
 import React from "react";
 import MUIDataTable from "mui-datatables";
+import { makeStyles } from "@material-ui/core/styles";
+import { Grid, Typography, CircularProgress, Chip } from "@material-ui/core";
+import { Block, CheckCircle } from "@material-ui/icons";
 import * as productGroupAxios from "../_redux/productGroupAxios";
-import Grid from "@material-ui/core/Grid";
-// import EmployeeTableSearch from "./EmployeeTableSearch";
+import * as swal from "../../Common/components/SweetAlert";
 import DeleteButton from "../../Common/components/Buttons/DeleteButton";
 import EditButton from "../../Common/components/Buttons/EditButton";
-import CircularProgress from "@material-ui/core/CircularProgress";
-import Typography from "@material-ui/core/Typography";
-import * as swal from "../../Common/components/SweetAlert";
+import ProductGroupSearch from "./ProductGroupSearch";
 
 var flatten = require("flat");
 require("dayjs/locale/th");
@@ -17,15 +17,13 @@ var dayjs = require("dayjs");
 dayjs.locale("th");
 
 function ProductGroupTable(props) {
-  const [paginated, setPaginated] = React.useState({
+  const [filter, setFilter] = React.useState({
     page: 1,
     recordsPerPage: 10,
     orderingField: "",
     ascendingOrder: true,
     searchValues: {
-      employeeCode: "",
-      firstName: "",
-      lastName: "",
+      pgName: "",
     },
   });
 
@@ -38,7 +36,7 @@ function ProductGroupTable(props) {
   React.useEffect(() => {
     //load data from api
     loadData();
-  }, [paginated]);
+  }, [filter]);
 
   const handleDelete = (id) => {
     //confirm
@@ -63,33 +61,42 @@ function ProductGroupTable(props) {
     });
   };
 
-  //   const handleEdit = (id) => {
-  //     props.history.push(`/employee/edit/${id}`);
-  //   };
+  // const handleEdit = (id) => {
+  //   props.history.push(`/employee/edit/${id}`);
+  // };
 
-  //   const handleSearch = (values) => {
-  //     setPaginated({
-  //       ...paginated,
-  //       page: 1,
-  //       searchValues: values,
-  //     });
-  //   };
+  const handleSearch = (values) => {
+    setFilter({
+      ...filter,
+      page: 1,
+      searchValues: values,
+    });
+  };
 
   const columns = [
     {
-      name: "Id",
+      name: "id",
       label: "Id",
+      option: {
+        sort: false,
+      },
     },
     {
-      name: "Name",
+      name: "name",
       label: "Name",
       option: {
         sort: false,
       },
     },
-    "CreatedBy",
     {
-      name: "CreatedDate",
+      name: "createdBy",
+      label: "CreatedBy",
+      option: {
+        sort: false,
+      },
+    },
+    {
+      name: "createdDate",
       options: {
         customBodyRenderLite: (dataIndex, rowIndex) => {
           return (
@@ -107,25 +114,62 @@ function ProductGroupTable(props) {
       },
     },
     {
-      name: "",
+      name: "isActive",
+      label: "isActive",
       options: {
-        filter: false,
-        sort: false,
-        empty: true,
+        // sort: false,
+        // setCellHeaderProps: () => ({ align: "center" }),
         customBodyRenderLite: (dataIndex, rowIndex) => {
           return (
             <Grid
               style={{ padding: 0, margin: 0 }}
               container
               direction="row"
-              justify="flex-end"
+              justify="flex-start"
+              alignItems="center"
+            >
+              {data[dataIndex].isActive === true ? (
+                <Chip
+                  icon={<CheckCircle />}
+                  label="Active"
+                  variant="outlined"
+                  color="primary"
+                />
+              ) : (
+                <Chip
+                  icon={<Block />}
+                  label="Delete"
+                  variant="outlined"
+                  color="default"
+                />
+              )}
+            </Grid>
+          );
+        },
+      },
+    },
+    {
+      name: "",
+      options: {
+        filter: false,
+        sort: false,
+        empty: true,
+        viewColumns: false,
+        setCellHeaderProps: () => ({ align: "center" }),
+        customBodyRenderLite: (dataIndex, rowIndex) => {
+          return (
+            <Grid
+              style={{ padding: 0, margin: 0 }}
+              container
+              direction="row"
+              justify="center"
               alignItems="center"
             >
               <EditButton
                 style={{ marginRight: 5 }}
                 onClick={() => {
                   alert(data[dataIndex].id);
-                  //   handleEdit(data[dataIndex].id);
+                  //(data[dataIndex].id);
                 }}
               >
                 Edit
@@ -133,7 +177,7 @@ function ProductGroupTable(props) {
               <DeleteButton
                 onClick={() => {
                   alert(data[dataIndex].id);
-                  //   handleDelete(data[dataIndex].id);
+                  //handleDelete(data[dataIndex].id);
                 }}
               >
                 Delete
@@ -148,24 +192,28 @@ function ProductGroupTable(props) {
   const loadData = () => {
     setIsLoading(true);
     productGroupAxios
-      .getProductGroupAll()
+      .getProductGroupFilter(
+        filter.orderingField,
+        filter.ascendingOrder,
+        filter.page,
+        filter.recordsPerPage,
+        filter.searchValues.pgName
+      )
       .then((res) => {
-        //TODO:
-        console.log(res);
-
-        // if (res.data.isSuccess) {
-        //   //flatten data
-        //   if (res.data.totalAmountRecords > 0) {
-        //     let flatData = [];
-        //     res.data.data.forEach((element) => {
-        //       flatData.push(flatten(element));
-        //     });
-        //     setData(flatData);
-        //   }
-        //   setTotalRecords(res.data.totalAmountRecords);
-        // } else {
-        //   alert(res.data.message);
-        // }
+        if (res.data.isSuccess) {
+          //flatten data
+          if (res.data.totalAmountRecords > 0) {
+            let flatData = [];
+            res.data.data.forEach((element) => {
+              flatData.push(flatten(element));
+            });
+            setData(flatData);
+            console.log(flatData);
+          }
+          setTotalRecords(res.data.totalAmountRecords);
+        } else {
+          alert(res.data.message);
+        }
       })
       .catch((err) => {
         alert(err.message);
@@ -184,29 +232,29 @@ function ProductGroupTable(props) {
     selectableRows: "none",
     serverSide: true,
     count: totalRecords,
-    page: paginated.page - 1,
-    rowsPerPage: paginated.recordsPerPage,
+    page: filter.page - 1,
+    rowsPerPage: filter.recordsPerPage,
     onTableChange: (action, tableState) => {
       switch (action) {
         case "changePage":
-          setPaginated({ ...paginated, page: tableState.page + 1 });
+          setFilter({ ...filter, page: tableState.page + 1 });
           break;
         case "sort":
-          setPaginated({
-            ...paginated,
+          setFilter({
+            ...filter,
             orderingField: `${tableState.sortOrder.name}`,
             ascendingOrder:
               tableState.sortOrder.direction === "asc" ? true : false,
           });
           break;
         case "changeRowsPerPage":
-          setPaginated({
-            ...paginated,
+          setFilter({
+            ...filter,
             recordsPerPage: tableState.rowsPerPage,
           });
           break;
         default:
-        //  console.log(`action not handled. [${action}]`);
+          console.log(`action not handled. [${action}]`);
       }
     },
   };
@@ -214,11 +262,11 @@ function ProductGroupTable(props) {
   return (
     <div>
       {/* search */}
-      {/* <EmployeeTableSearch
+      <ProductGroupSearch
         submit={handleSearch.bind(this)}
         // submit={setSearchValues.bind(this)}
-      ></EmployeeTableSearch> */}
-      {/* <MUIDataTable
+      ></ProductGroupSearch>
+      <MUIDataTable
         title={
           <Typography variant="h6">
             ProductGroup
@@ -233,8 +281,7 @@ function ProductGroupTable(props) {
         data={data}
         columns={columns}
         options={options}
-      /> */}
-      {JSON.stringify(data)}
+      />
     </div>
   );
 }
