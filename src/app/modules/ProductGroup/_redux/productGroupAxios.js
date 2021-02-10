@@ -3,7 +3,7 @@ import axios from "axios";
 import * as CONST from "../../../../Constants";
 import { encodeURLWithParams } from "../../Common/components/ParamsEncode";
 
-export const PRODUCTGROUP_URL = `${CONST.LOCAL_API_URL}/productgroup`;
+export const PRODUCTGROUP_URL = `${CONST.API_URL}/productgroup`;
 
 export const addProductGroup = (payload) => {
   debugger;

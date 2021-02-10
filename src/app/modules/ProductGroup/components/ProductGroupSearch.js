@@ -1,3 +1,4 @@
+/* eslint-disable no-lone-blocks */
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable no-restricted-imports */
 import * as React from "react";
@@ -9,8 +10,9 @@ import { Button, LinearProgress, Grid, Typography } from "@material-ui/core";
 function ProductGroupSearch(props) {
   return (
     <Formik
+      enableReinitialize
       initialValues={{
-        name: "",
+        name: props.name,
       }}
       validate={(values) => {
         const errors = {};
@@ -37,6 +39,7 @@ function ProductGroupSearch(props) {
                 type="text"
                 label="กรอกคำค้นหา"
                 name="name"
+                value={values.name}
               />
             </Grid>
             <Grid

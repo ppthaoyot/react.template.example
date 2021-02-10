@@ -7,7 +7,7 @@ var dayjs = require("dayjs");
 export const LOGIN_URL = `${CONST.API_URL}/Auth/login`;
 export const REGISTER_URL = `/Auth/register`;
 export const REQUEST_PASSWORD_URL = `api/auth/forgot-password`;
-export const RENEW_TOKEN_URL = `${CONST.API_URL}/Auth/renew`
+export const RENEW_TOKEN_URL = `${CONST.API_URL}/Auth/renew`;
 
 export const ME_URL = `${CONST.API_URL}/Auth/renew`;
 
@@ -24,7 +24,7 @@ export function requestPassword(email) {
 }
 
 export function getUserByToken(token) {
-  let decoded = jwt_decode(token)['unique_name'];
+  let decoded = jwt_decode(token)["unique_name"];
   return decoded;
 }
 
@@ -34,13 +34,13 @@ export function getExp(token) {
 }
 
 export function renewToken() {
-  return axios.post(RENEW_TOKEN_URL)
+  return axios.post(RENEW_TOKEN_URL);
 }
 
 export function getRoles(token) {
   let decoded = jwt_decode(token);
   if (!decoded.role) {
-    return []
+    return [];
   }
   return decoded.role;
 }

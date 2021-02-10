@@ -256,6 +256,7 @@ function ProductGroupTable(props) {
     rowsPerPage: filter.recordsPerPage,
     searchPlaceholder: "กรอกข้อมูลอย่างน้อย 3 ตัวอักษร..",
     onChangePage: (currentPage) => {
+      debugger;
       setFilter({ ...filter, page: currentPage + 1 });
     },
     onChangeRowsPerPage: (numberOfRows) => {
@@ -309,6 +310,7 @@ function ProductGroupTable(props) {
             <Grid item xs={12} lg={6}>
               <ProductGroupSearch
                 submit={handleSearch.bind(this)}
+                name={filter.searchValues.name}
               ></ProductGroupSearch>
             </Grid>
             <Grid
