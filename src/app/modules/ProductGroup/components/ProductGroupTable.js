@@ -14,10 +14,10 @@ import {
 import { Block, CheckCircle } from "@material-ui/icons";
 import * as productGroupAxios from "../_redux/productGroupAxios";
 import * as swal from "../../Common/components/SweetAlert";
-import DeleteButton from "../../Common/components/Buttons/DeleteButton";
-import EditButton from "../../Common/components/Buttons/EditButton";
 import ProductGroupSearch from "./ProductGroupSearch";
 import ProductGroupAdd from "../components/ProductGroupAdd";
+import ProductGroupDelete from "../components/ProductGroupDelete";
+import ProductGroupEdit from "../components/ProductGroupEdit";
 
 var flatten = require("flat");
 require("dayjs/locale/th");
@@ -46,33 +46,6 @@ function ProductGroupTable(props) {
     loadData();
   }, [filter]);
 
-  const handleDelete = (id) => {
-    //confirm
-    swal.swalConfirm("Confirm delete?", `Confirm delete ${id}?`).then((res) => {
-      if (res.isConfirmed) {
-        //delete
-        productGroupAxios
-          .deleteProductGroup(id)
-          .then((res) => {
-            if (res.data.isSuccess) {
-              //reload
-              swal.swalSuccess("Success", `Delete ${id} success.`).then(() => {
-                loadData();
-              });
-            }
-          })
-          .catch((err) => {
-            //network error
-            swal.swalError("Error", err.message);
-          });
-      }
-    });
-  };
-
-  // const handleEdit = (id) => {
-  //   props.history.push(`/employee/edit/${id}`);
-  // };
-
   const handleSearch = (values) => {
     setFilter({
       ...filter,
@@ -82,13 +55,12 @@ function ProductGroupTable(props) {
   };
 
   const handleReload = (values) => {
-    if (values) {
-      setFilter({
-        ...filter,
-        page: 1,
-        searchValues: { name: "" },
-      });
-    }
+    debugger;
+    setFilter({
+      ...filter,
+      page: 1,
+      searchValues: { name: "" },
+    });
   };
 
   const columns = [
@@ -183,23 +155,16 @@ function ProductGroupTable(props) {
               justify="center"
               alignItems="center"
             >
-              <EditButton
+              <ProductGroupEdit
                 style={{ marginRight: 5 }}
-                onClick={() => {
-                  alert(data[dataIndex].id);
-                  //(data[dataIndex].id);
-                }}
-              >
-                Edit
-              </EditButton>
-              <DeleteButton
-                onClick={() => {
-                  alert(data[dataIndex].id);
-                  //handleDelete(data[dataIndex].id);
-                }}
-              >
-                Delete
-              </DeleteButton>
+                productgid={data[dataIndex].id}
+                //submit={handleReload.bind(this)}
+              ></ProductGroupEdit>
+              <ProductGroupDelete
+                disabled={data[dataIndex].isActive === true ? false : true}
+                productgid={data[dataIndex].id}
+                submit={handleReload.bind(this)}
+              ></ProductGroupDelete>
             </Grid>
           );
         },
@@ -256,7 +221,6 @@ function ProductGroupTable(props) {
     rowsPerPage: filter.recordsPerPage,
     searchPlaceholder: "กรอกข้อมูลอย่างน้อย 3 ตัวอักษร..",
     onChangePage: (currentPage) => {
-      debugger;
       setFilter({ ...filter, page: currentPage + 1 });
     },
     onChangeRowsPerPage: (numberOfRows) => {

@@ -9,14 +9,14 @@ export const addProductGroup = (payload) => {
   debugger;
   return axios.post(`${PRODUCTGROUP_URL}`, payload);
 };
-export const editProductGroup = (payload, Id) => {
-  return axios.put(`${PRODUCTGROUP_URL}/${Id}`, payload);
+export const editProductGroup = (payload, id) => {
+  return axios.put(`${PRODUCTGROUP_URL}/${id}`, payload);
 };
-export const deleteProductGroup = (Id) => {
-  return axios.delete(`${PRODUCTGROUP_URL}/${Id}`);
+export const deleteProductGroup = (id) => {
+  return axios.delete(`${PRODUCTGROUP_URL}/${id}`);
 };
-export const getProductGroup = (Id) => {
-  return axios.get(`${PRODUCTGROUP_URL}/${Id}`);
+export const getProductGroup = (id) => {
+  return axios.get(`${PRODUCTGROUP_URL}/${id}`);
 };
 export const getProductGroupAll = () => {
   return axios.get(`${PRODUCTGROUP_URL}/all`);

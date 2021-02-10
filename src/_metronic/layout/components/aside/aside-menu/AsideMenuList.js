@@ -234,7 +234,7 @@ export function AsideMenuList({ layoutProps }) {
           </li> */}
 
           {/*begin::1 withDropdown*/}
-          <li
+          {/* <li
             className={`menu-item ${getMenuItemActive("/withDropdown", false)}`}
             aria-haspopup="true"
           >
@@ -244,7 +244,7 @@ export function AsideMenuList({ layoutProps }) {
               </span>
               <span className="menu-text">Formik Dropdown</span>
             </NavLink>
-          </li>
+          </li> */}
 
           {/*begin::1 withDatePicker*/}
           {/* <li
@@ -271,7 +271,7 @@ export function AsideMenuList({ layoutProps }) {
           {/* end:: section */}
 
           {/*begin::1 newEmployee*/}
-          <li
+          {/* <li
             className={`menu-item ${getMenuItemActive("/employee/new", false)}`}
             aria-haspopup="true"
           >
@@ -281,11 +281,11 @@ export function AsideMenuList({ layoutProps }) {
               </span>
               <span className="menu-text">New Employee</span>
             </NavLink>
-          </li>
+          </li> */}
           {/*End::1 newEmployee*/}
 
           {/*begin::1 Employee List*/}
-          <li
+          {/* <li
             className={`menu-item ${getMenuItemActive("/employee/", false)}`}
             aria-haspopup="true"
           >
@@ -295,7 +295,7 @@ export function AsideMenuList({ layoutProps }) {
               </span>
               <span className="menu-text">Employee</span>
             </NavLink>
-          </li>
+          </li> */}
           {/*End::1 Employee List*/}
 
           {/*Product Group*/}
@@ -307,7 +307,7 @@ export function AsideMenuList({ layoutProps }) {
               <span className="svg-icon menu-icon">
                 <Icon>supervisor_account</Icon>
               </span>
-              <span className="menu-text">Product Group</span>
+              <span className="menu-text">ProductGroup</span>
             </NavLink>
           </li>
           {/*End::1 Product Group*/}
