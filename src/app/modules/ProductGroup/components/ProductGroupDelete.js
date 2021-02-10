@@ -51,7 +51,8 @@ function ProductGroupDelete(props) {
 
   return (
     <Button
-      {...props}
+      // {...props}
+      style={{ marginRight: 5 }}
       variant="contained"
       className={classes.root}
       startIcon={<DeleteIcon />}

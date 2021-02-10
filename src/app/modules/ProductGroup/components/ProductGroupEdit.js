@@ -45,7 +45,6 @@ function ProductGroupEdit(props) {
     productGroupAxios
       .getProductGroup(id)
       .then((response) => {
-        debugger;
         if (response.data.isSuccess) {
           setData({
             ...data,
@@ -67,6 +66,11 @@ function ProductGroupEdit(props) {
 
   const handleClose = () => {
     setOpen(false);
+  };
+
+  const handleTest = () => {
+    setOpen(false);
+    swal.swalError("Error", "ปิดปรับปรุง กรุณาติดต่อผู้ดูแล");
   };
 
   return (
@@ -92,7 +96,8 @@ function ProductGroupEdit(props) {
         {({ submitForm, isSubmitting, values, errors, resetForm }) => (
           <Form>
             <Button
-              {...props}
+              // {...props}
+              style={{ marginRight: 5 }}
               variant="contained"
               className={classes.root}
               startIcon={<EditIcon />}
@@ -126,7 +131,7 @@ function ProductGroupEdit(props) {
                 <Button onClick={handleClose} color="primary">
                   Cancel
                 </Button>
-                <Button onClick={handleClose} color="primary">
+                <Button onClick={handleTest} color="primary">
                   Save
                 </Button>
               </DialogActions>

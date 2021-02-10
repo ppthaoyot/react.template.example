@@ -55,7 +55,6 @@ function ProductGroupTable(props) {
   };
 
   const handleReload = (values) => {
-    debugger;
     setFilter({
       ...filter,
       page: 1,
@@ -156,7 +155,6 @@ function ProductGroupTable(props) {
               alignItems="center"
             >
               <ProductGroupEdit
-                style={{ marginRight: 5 }}
                 productgid={data[dataIndex].id}
                 //submit={handleReload.bind(this)}
               ></ProductGroupEdit>
@@ -192,6 +190,9 @@ function ProductGroupTable(props) {
             });
             setData(flatData);
             console.log(flatData);
+            console.log(
+              `TEST_GET_FLATDATA_PRODUCTGROUP_ID : ${flatData[0]["products.0.productGroupId"]}`
+            );
           } else {
             setData(res.data.data);
           }

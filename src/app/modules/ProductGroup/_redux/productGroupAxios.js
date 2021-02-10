@@ -6,7 +6,6 @@ import { encodeURLWithParams } from "../../Common/components/ParamsEncode";
 export const PRODUCTGROUP_URL = `${CONST.API_URL}/productgroup`;
 
 export const addProductGroup = (payload) => {
-  debugger;
   return axios.post(`${PRODUCTGROUP_URL}`, payload);
 };
 export const editProductGroup = (payload, id) => {
