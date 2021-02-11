@@ -1,24 +1,17 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable no-restricted-imports */
 import React from "react";
-import Button from "@material-ui/core/Button";
-import { makeStyles } from "@material-ui/core/styles";
-import DeleteIcon from "@material-ui/icons/Delete";
-import { red } from "@material-ui/core/colors";
 import * as swal from "../../Common/components/SweetAlert";
 import * as productGroupAxios from "../_redux/productGroupAxios";
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    color: theme.palette.getContrastText(red[400]),
-    backgroundColor: red[400],
-    "&:hover": {
-      backgroundColor: red[700],
-    },
-  },
-}));
-
 function ProductGroupDelete(props) {
-  const classes = useStyles();
+  debugger;
+  React.useEffect(() => {
+    if (props.productgroupid !== 0) {
+      debugger;
+      handleDelete();
+    }
+  }, [props.productgroupid]);
 
   const handleDelete = () => {
     swal.swalConfirm("Confirm Delete?", "").then((sw) => {
@@ -49,18 +42,7 @@ function ProductGroupDelete(props) {
       });
   };
 
-  return (
-    <Button
-      // {...props}
-      style={{ marginRight: 5 }}
-      variant="contained"
-      className={classes.root}
-      startIcon={<DeleteIcon />}
-      onClick={handleDelete}
-    >
-      Delete
-    </Button>
-  );
+  return <div></div>;
 }
 
 export default ProductGroupDelete;

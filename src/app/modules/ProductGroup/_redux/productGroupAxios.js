@@ -8,7 +8,7 @@ export const PRODUCTGROUP_URL = `${CONST.API_URL}/productgroup`;
 export const addProductGroup = (payload) => {
   return axios.post(`${PRODUCTGROUP_URL}`, payload);
 };
-export const editProductGroup = (payload, id) => {
+export const updateProductGroup = (id, payload) => {
   return axios.put(`${PRODUCTGROUP_URL}/${id}`, payload);
 };
 export const deleteProductGroup = (id) => {

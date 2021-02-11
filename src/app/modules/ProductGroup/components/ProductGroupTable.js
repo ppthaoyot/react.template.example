@@ -1,8 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable no-restricted-imports */
-import React from "react";
+import React, { useState } from "react";
 import MUIDataTable from "mui-datatables";
-import { makeStyles } from "@material-ui/core/styles";
 import {
   Grid,
   Typography,
@@ -18,6 +17,8 @@ import ProductGroupSearch from "./ProductGroupSearch";
 import ProductGroupAdd from "../components/ProductGroupAdd";
 import ProductGroupDelete from "../components/ProductGroupDelete";
 import ProductGroupEdit from "../components/ProductGroupEdit";
+import EditButton from "../../Common/components/Buttons/EditButton";
+import DeleteButton from "../../Common/components/Buttons/DeleteButton";
 
 var flatten = require("flat");
 require("dayjs/locale/th");
@@ -41,8 +42,13 @@ function ProductGroupTable(props) {
 
   const [isLoading, setIsLoading] = React.useState(true);
 
+  const [productGroupId, setProductGroupId] = useState({
+    add: 0,
+    edit: 0,
+    delete: 0,
+  });
+
   React.useEffect(() => {
-    //load data from api
     loadData();
   }, [filter]);
 
@@ -52,6 +58,20 @@ function ProductGroupTable(props) {
       page: 1,
       searchValues: values,
     });
+  };
+
+  const handleEdit = (id) => {
+    debugger;
+    setProductGroupId({ ...productGroupId, edit: id });
+  };
+
+  const handleDelete = (id) => {
+    setProductGroupId({ ...productGroupId, delete: id });
+  };
+
+  const handleReset = (values) => {
+    debugger;
+    setProductGroupId({ ...productGroupId, add: 0, edit: 0, delete: 0 });
   };
 
   const handleReload = (values) => {
@@ -154,15 +174,23 @@ function ProductGroupTable(props) {
               justify="center"
               alignItems="center"
             >
-              <ProductGroupEdit
-                productgid={data[dataIndex].id}
-                //submit={handleReload.bind(this)}
-              ></ProductGroupEdit>
-              <ProductGroupDelete
+              <EditButton
+                style={{ marginRight: 5 }}
+                onClick={() => {
+                  handleEdit(data[dataIndex].id);
+                }}
+              >
+                Edit
+              </EditButton>
+              <DeleteButton
+                style={{ marginRight: 5 }}
                 disabled={data[dataIndex].isActive === true ? false : true}
-                productgid={data[dataIndex].id}
-                submit={handleReload.bind(this)}
-              ></ProductGroupDelete>
+                onClick={() => {
+                  handleDelete(data[dataIndex].id);
+                }}
+              >
+                Delete
+              </DeleteButton>
             </Grid>
           );
         },
@@ -240,30 +268,6 @@ function ProductGroupTable(props) {
         ascendingOrder: direction === "asc" ? true : false,
       });
     },
-    // onTableChange: (action, tableState) => {
-    //   debugger;
-    //   switch (action) {
-    //     case "changePage":
-    //       setFilter({ ...filter, page: tableState.page + 1 });
-    //       break;
-    //     case "sort":
-    //       setFilter({
-    //         ...filter,
-    //         orderingField: `${tableState.sortOrder.name}`,
-    //         ascendingOrder:
-    //           tableState.sortOrder.direction === "asc" ? true : false,
-    //       });
-    //       break;
-    //     case "changeRowsPerPage":
-    //       setFilter({
-    //         ...filter,
-    //         recordsPerPage: tableState.rowsPerPage,
-    //       });
-    //       break;
-    //     default:
-    //     //  console.log(`action not handled. [${action}]`);
-    //   }
-    // },
   };
 
   return (
@@ -313,6 +317,18 @@ function ProductGroupTable(props) {
         columns={columns}
         options={options}
       />
+
+      <ProductGroupEdit
+        productgroupid={productGroupId.edit}
+        returnvalue={handleReload.bind(this)}
+        reset={handleReset.bind(this)}
+      ></ProductGroupEdit>
+
+      <ProductGroupDelete
+        productgroupid={productGroupId.add}
+        returnvalue={handleReload.bind(this)}
+        reset={handleReset.bind(this)}
+      ></ProductGroupDelete>
     </div>
   );
 }

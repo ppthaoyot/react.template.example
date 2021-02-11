@@ -69,9 +69,9 @@ function ProductGroupAdd(props) {
         }}
         onSubmit={(values, { setSubmitting, resetForm }) => {
           let payload = {
+            ...productGroupReducer.currentProductGroupToAdd,
             name: values.name,
           };
-          productGroupReducer.currentProductGroupToAdd.name = payload.name;
           handleClose();
           resetForm();
           handleAdd({ setSubmitting }, payload);

@@ -12,11 +12,7 @@ const initialState = {
   currentPage: 0,
   currentProductGroupToAdd: {
     name: "",
-    createdBy: "",
-    createdDate: dayjs(),
-    updatedBy: "",
-    updatedDate: dayjs(),
-    isActive: true,
+    isActive: false,
   },
 };
 
