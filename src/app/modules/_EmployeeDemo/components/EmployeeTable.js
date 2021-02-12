@@ -26,7 +26,7 @@ function EmployeeTable(props) {
       employeeCode: "",
       firstName: "",
       lastName: "",
-    }
+    },
   });
 
   const [totalRecords, setTotalRecords] = React.useState(0);
@@ -64,16 +64,16 @@ function EmployeeTable(props) {
   };
 
   const handleEdit = (id) => {
-    props.history.push(`/employee/edit/${id}`)
-  }
+    props.history.push(`/employee/edit/${id}`);
+  };
 
   const handleSearch = (values) => {
     setPaginated({
       ...paginated,
       page: 1,
-      searchValues: values
+      searchValues: values,
     });
-  }
+  };
 
   const columns = [
     {
@@ -194,7 +194,7 @@ function EmployeeTable(props) {
     onTableChange: (action, tableState) => {
       switch (action) {
         case "changePage":
-          setPaginated({ ...paginated, page: tableState.page + 1});
+          setPaginated({ ...paginated, page: tableState.page + 1 });
           break;
         case "sort":
           setPaginated({
