@@ -3,28 +3,29 @@
 import React from "react";
 import { useLocation } from "react-router";
 import { NavLink } from "react-router-dom";
-import SVG from "react-inlinesvg";
-import { toAbsoluteUrl, checkIsActive } from "../../../../_helpers";
-import { useSelector } from "react-redux";
-import { ROLES } from "../../../../../Constants";
+// import SVG from "react-inlinesvg";
+// import { toAbsoluteUrl, checkIsActive } from "../../../../_helpers";
+import { checkIsActive } from "../../../../_helpers";
+// import { useSelector } from "react-redux";
+//import { ROLES } from "../../../../../Constants";
 import Hoc from "../../../../../app/modules/Common/components/Hoc";
-import DvrIcon from "@material-ui/icons/Dvr";
+//import DvrIcon from "@material-ui/icons/Dvr";
 import Icon from "@material-ui/core/Icon";
 
 export function AsideMenuList({ layoutProps }) {
   const location = useLocation();
-  const authReducer = useSelector(({ auth }) => auth);
+  // const authReducer = useSelector(({ auth }) => auth);
 
-  const isShowMenu = (roles) => {
-    roles = roles === undefined ? [] : roles;
-    if (roles.length > 0) {
-      // check if route is restricted by role
-      let intersection = roles.filter((x) => authReducer.roles.includes(x));
-      return intersection.length > 0;
-    } else {
-      return true;
-    }
-  };
+  // const isShowMenu = (roles) => {
+  //   roles = roles === undefined ? [] : roles;
+  //   if (roles.length > 0) {
+  //     // check if route is restricted by role
+  //     let intersection = roles.filter((x) => authReducer.roles.includes(x));
+  //     return intersection.length > 0;
+  //   } else {
+  //     return true;
+  //   }
+  // };
 
   const getMenuItemActive = (url, hasSubmenu = false) => {
     return checkIsActive(location, url)

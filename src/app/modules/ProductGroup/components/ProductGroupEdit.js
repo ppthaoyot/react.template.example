@@ -22,9 +22,12 @@ import { TextField, Select } from "formik-material-ui";
 function ProductGroupEdit(props) {
   const dispatch = useDispatch();
   const [open, setOpen] = React.useState(false);
-  const [data, setData] = React.useState({ name: "", isActive: false });
-  const productGroupReducer = useSelector(({ productGroup }) => productGroup);
+  const [data, setData] = React.useState({
+    name: "",
+    isActive: false,
+  });
 
+  const productGroupReducer = useSelector(({ productGroup }) => productGroup);
   React.useEffect(() => {
     if (props.productgroupid !== 0) {
       handleGet();
@@ -61,9 +64,9 @@ function ProductGroupEdit(props) {
           swal
             .swalSuccess("Update Completed", `id: ${response.data.data.id}`)
             .then(() => {
-              props.returnvalue(response.data.isSuccess);
               dispatch(productGroupRedux.actions.resetCurrentProductGroup());
             });
+          props.submit(true);
         } else {
           swal.swalError("Error", response.data.message);
         }
@@ -71,7 +74,7 @@ function ProductGroupEdit(props) {
       .catch((err) => {
         swal.swalError("Error", err.message);
       })
-      .finally((response) => {
+      .finally(() => {
         handleClose();
       });
   };
@@ -81,7 +84,7 @@ function ProductGroupEdit(props) {
   };
 
   const handleClose = () => {
-    props.reset(true);
+    props.reset("EDIT");
     setOpen(false);
   };
 

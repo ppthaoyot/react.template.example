@@ -42,11 +42,8 @@ function ProductGroupTable(props) {
 
   const [isLoading, setIsLoading] = React.useState(true);
 
-  const [productGroupId, setProductGroupId] = useState({
-    add: 0,
-    edit: 0,
-    delete: 0,
-  });
+  const [productGroupIdEdit, setProductGroupIdEdit] = useState(0);
+  const [productGroupIdDelete, setProductGroupIdDelete] = useState(0);
 
   React.useEffect(() => {
     loadData();
@@ -61,20 +58,27 @@ function ProductGroupTable(props) {
   };
 
   const handleEdit = (id) => {
-    debugger;
-    setProductGroupId({ ...productGroupId, edit: id });
+    setProductGroupIdEdit(id);
   };
 
   const handleDelete = (id) => {
-    setProductGroupId({ ...productGroupId, delete: id });
+    setProductGroupIdDelete(id);
   };
 
-  const handleReset = (values) => {
-    debugger;
-    setProductGroupId({ ...productGroupId, add: 0, edit: 0, delete: 0 });
+  const handleReset = (value) => {
+    switch (value) {
+      case "EDIT":
+        setProductGroupIdEdit(0);
+        break;
+      case "DELETE":
+        setProductGroupIdDelete(0);
+        break;
+      default:
+        break;
+    }
   };
 
-  const handleReload = (values) => {
+  const handleReload = (value) => {
     setFilter({
       ...filter,
       page: 1,
@@ -217,20 +221,16 @@ function ProductGroupTable(props) {
               flatData.push(flatten(element));
             });
             setData(flatData);
-            console.log(flatData);
-            console.log(
-              `TEST_GET_FLATDATA_PRODUCTGROUP_ID : ${flatData[0]["products.0.productGroupId"]}`
-            );
           } else {
             setData(res.data.data);
           }
           setTotalRecords(res.data.totalAmountRecords);
         } else {
-          alert(res.data.message);
+          swal.swalError("Error", res.data.message);
         }
       })
       .catch((err) => {
-        alert(err.message);
+        swal.swalError("Error", err.message);
       })
       .finally(() => {
         setIsLoading(false);
@@ -319,14 +319,14 @@ function ProductGroupTable(props) {
       />
 
       <ProductGroupEdit
-        productgroupid={productGroupId.edit}
-        returnvalue={handleReload.bind(this)}
+        productgroupid={productGroupIdEdit}
+        submit={handleReload.bind(this)}
         reset={handleReset.bind(this)}
       ></ProductGroupEdit>
 
       <ProductGroupDelete
-        productgroupid={productGroupId.add}
-        returnvalue={handleReload.bind(this)}
+        productgroupid={productGroupIdDelete}
+        submit={handleReload.bind(this)}
         reset={handleReset.bind(this)}
       ></ProductGroupDelete>
     </div>
