@@ -5,6 +5,7 @@ import * as swal from "../../Common/components/SweetAlert";
 import * as productGroupAxios from "../_redux/productGroupAxios";
 
 function ProductGroupDelete(props) {
+  debugger;
   React.useEffect(() => {
     if (props.productgroupid !== 0) {
       handleDelete();
@@ -27,11 +28,10 @@ function ProductGroupDelete(props) {
       .deleteProductGroup(id)
       .then((response) => {
         if (response.data.isSuccess) {
-          //Success
           swal
             .swalSuccess("Delete Completed", `id: ${response.data.data.id}`)
             .then(() => {});
-          props.submit(true);
+          props.submit("FROM_DELETE_SUBMIT");
         } else {
           swal.swalError("Error", response.data.message);
         }
@@ -45,7 +45,7 @@ function ProductGroupDelete(props) {
   };
 
   const handleReset = () => {
-    props.reset("DELETE");
+    props.reset("FROM_DELETE_RESET");
   };
   return <div></div>;
 }

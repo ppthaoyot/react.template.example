@@ -17,6 +17,7 @@ import ProductGroupSearch from "./ProductGroupSearch";
 import ProductGroupAdd from "../components/ProductGroupAdd";
 import ProductGroupDelete from "../components/ProductGroupDelete";
 import ProductGroupEdit from "../components/ProductGroupEdit";
+import AddButton from "../../Common/components/Buttons/AddButton";
 import EditButton from "../../Common/components/Buttons/EditButton";
 import DeleteButton from "../../Common/components/Buttons/DeleteButton";
 
@@ -37,19 +38,18 @@ function ProductGroupTable(props) {
   });
 
   const [totalRecords, setTotalRecords] = React.useState(0);
-
   const [data, setData] = React.useState([]);
-
   const [isLoading, setIsLoading] = React.useState(true);
-
   const [productGroupIdEdit, setProductGroupIdEdit] = useState(0);
   const [productGroupIdDelete, setProductGroupIdDelete] = useState(0);
+  const [openModal, setOpenModel] = useState(false);
 
   React.useEffect(() => {
     loadData();
   }, [filter]);
 
   const handleSearch = (values) => {
+    debugger;
     setFilter({
       ...filter,
       page: 1,
@@ -57,20 +57,31 @@ function ProductGroupTable(props) {
     });
   };
 
+  const handleAdd = () => {
+    debugger;
+    setOpenModel(true);
+  };
+
   const handleEdit = (id) => {
+    debugger;
     setProductGroupIdEdit(id);
   };
 
   const handleDelete = (id) => {
+    debugger;
     setProductGroupIdDelete(id);
   };
 
   const handleReset = (value) => {
+    debugger;
     switch (value) {
-      case "EDIT":
+      case "FROM_ADD_RESET":
+        setOpenModel(false);
+        break;
+      case "FROM_EDIT_RESET":
         setProductGroupIdEdit(0);
         break;
-      case "DELETE":
+      case "FROM_DELETE_RESET":
         setProductGroupIdDelete(0);
         break;
       default:
@@ -79,11 +90,21 @@ function ProductGroupTable(props) {
   };
 
   const handleReload = (value) => {
-    setFilter({
-      ...filter,
-      page: 1,
-      searchValues: { name: "" },
-    });
+    switch (value) {
+      case "FROM_ADD_SUBMIT":
+        setFilter({
+          ...filter,
+          page: 1,
+          searchValues: { name: "" },
+        });
+        break;
+      case "FROM_EDIT_SUBMIT":
+      case "FROM_DELETE_SUBMIT":
+        loadData();
+        break;
+      default:
+        break;
+    }
   };
 
   const columns = [
@@ -130,8 +151,6 @@ function ProductGroupTable(props) {
       name: "isActive",
       label: "isActive",
       options: {
-        // sort: false,
-        // setCellHeaderProps: () => ({ align: "center" }),
         customBodyRenderLite: (dataIndex, rowIndex) => {
           return (
             <Grid
@@ -292,9 +311,14 @@ function ProductGroupTable(props) {
               alignItems="flex-end"
             >
               <Grid item xs={12} lg={2}>
-                <ProductGroupAdd
+                <AddButton
                   submit={handleReload.bind(this)}
-                ></ProductGroupAdd>
+                  onClick={() => {
+                    handleAdd();
+                  }}
+                >
+                  Add
+                </AddButton>
               </Grid>
             </Grid>
           </Grid>
@@ -317,6 +341,11 @@ function ProductGroupTable(props) {
         columns={columns}
         options={options}
       />
+      <ProductGroupAdd
+        modal={openModal}
+        submit={handleReload.bind(this)}
+        reset={handleReset.bind(this)}
+      ></ProductGroupAdd>
 
       <ProductGroupEdit
         productgroupid={productGroupIdEdit}

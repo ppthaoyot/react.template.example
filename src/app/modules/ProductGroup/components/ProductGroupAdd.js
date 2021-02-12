@@ -1,12 +1,11 @@
 /* eslint-disable no-restricted-imports */
 import React from "react";
 import Button from "@material-ui/core/Button";
-// import TextField from "@material-ui/core/TextField";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogTitle from "@material-ui/core/DialogTitle";
-import { ControlPoint } from "@material-ui/icons";
+
 import { Formik, Form, Field } from "formik";
 import { TextField } from "formik-material-ui";
 import { useSelector, useDispatch } from "react-redux";
@@ -15,21 +14,27 @@ import * as productGroupRedux from "../_redux/productGroupRedux";
 import * as productGroupAxios from "../_redux/productGroupAxios";
 
 function ProductGroupAdd(props) {
+  debugger;
   const dispatch = useDispatch();
-  const productGroupReducer = useSelector(({ productGroup }) => productGroup);
   const [open, setOpen] = React.useState(false);
+  const productGroupReducer = useSelector(({ productGroup }) => productGroup);
+
+  React.useEffect(() => {
+    if (props.modal) {
+      handleClickOpen();
+    }
+  }, [props.modal]);
 
   const handleAdd = ({ setSubmitting }, payload) => {
     productGroupAxios
       .addProductGroup(payload)
       .then((response) => {
         if (response.data.isSuccess) {
-          //Success
           swal
             .swalSuccess("Add Completed", `Add id: ${response.data.data.id}`)
             .then(() => {
               dispatch(productGroupRedux.actions.resetCurrentProductGroup());
-              props.submit(response.data.isSuccess);
+              props.submit("FROM_ADD_SUBMIT");
             });
         } else {
           swal.swalError("Error", response.data.message);
@@ -48,6 +53,7 @@ function ProductGroupAdd(props) {
   };
 
   const handleClose = () => {
+    props.reset("FROM_ADD_RESET");
     setOpen(false);
   };
 
@@ -73,22 +79,13 @@ function ProductGroupAdd(props) {
             name: values.name,
           };
           handleClose();
+          setSubmitting(true);
           resetForm();
           handleAdd({ setSubmitting }, payload);
         }}
       >
         {({ submitForm, isSubmitting, values, errors, resetForm }) => (
           <Form>
-            <Button
-              fullWidth
-              variant="contained"
-              color="primary"
-              startIcon={<ControlPoint />}
-              onClick={handleClickOpen}
-            >
-              Add
-            </Button>
-
             <Dialog
               fullWidth
               maxWidth={"sm"}
@@ -114,7 +111,11 @@ function ProductGroupAdd(props) {
                 <Button onClick={handleClose} color="primary">
                   Cancel
                 </Button>
-                <Button onClick={submitForm} color="primary">
+                <Button
+                  onClick={submitForm}
+                  color="primary"
+                  disabled={isSubmitting}
+                >
                   Save
                 </Button>
               </DialogActions>

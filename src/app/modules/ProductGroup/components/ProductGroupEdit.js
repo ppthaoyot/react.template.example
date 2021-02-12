@@ -4,9 +4,6 @@ import React from "react";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogTitle from "@material-ui/core/DialogTitle";
-import * as swal from "../../Common/components/SweetAlert";
-import * as productGroupRedux from "../_redux/productGroupRedux";
-import * as productGroupAxios from "../_redux/productGroupAxios";
 import { useSelector, useDispatch } from "react-redux";
 import {
   Button,
@@ -18,16 +15,20 @@ import {
 } from "@material-ui/core";
 import { Formik, Form, Field } from "formik";
 import { TextField, Select } from "formik-material-ui";
+import * as swal from "../../Common/components/SweetAlert";
+import * as productGroupRedux from "../_redux/productGroupRedux";
+import * as productGroupAxios from "../_redux/productGroupAxios";
 
 function ProductGroupEdit(props) {
+  debugger;
   const dispatch = useDispatch();
   const [open, setOpen] = React.useState(false);
   const [data, setData] = React.useState({
     name: "",
     isActive: false,
   });
-
   const productGroupReducer = useSelector(({ productGroup }) => productGroup);
+
   React.useEffect(() => {
     if (props.productgroupid !== 0) {
       handleGet();
@@ -56,7 +57,7 @@ function ProductGroupEdit(props) {
       });
   };
 
-  const handleUpdate = (payload) => {
+  const handleUpdate = (payload, { setSubmitting }) => {
     productGroupAxios
       .updateProductGroup(props.productgroupid, payload)
       .then((response) => {
@@ -64,9 +65,10 @@ function ProductGroupEdit(props) {
           swal
             .swalSuccess("Update Completed", `id: ${response.data.data.id}`)
             .then(() => {
+              setSubmitting(false);
               dispatch(productGroupRedux.actions.resetCurrentProductGroup());
             });
-          props.submit(true);
+          props.submit("FROM_EDIT_SUBMIT");
         } else {
           swal.swalError("Error", response.data.message);
         }
@@ -84,7 +86,7 @@ function ProductGroupEdit(props) {
   };
 
   const handleClose = () => {
-    props.reset("EDIT");
+    props.reset("FROM_EDIT_RESET");
     setOpen(false);
   };
 
@@ -109,8 +111,8 @@ function ProductGroupEdit(props) {
             name: values.name,
             isActive: values.isActive,
           };
-          resetForm();
-          handleUpdate(payload);
+          setSubmitting(true);
+          handleUpdate(payload, { setSubmitting });
         }}
       >
         {({
@@ -174,10 +176,18 @@ function ProductGroupEdit(props) {
                 </Grid>
               </DialogContent>
               <DialogActions>
-                <Button onClick={handleClose} color="primary">
+                <Button
+                  onClick={handleClose}
+                  color="primary"
+                  disabled={isSubmitting}
+                >
                   Cancel
                 </Button>
-                <Button onClick={submitForm} color="primary">
+                <Button
+                  onClick={submitForm}
+                  color="primary"
+                  disabled={isSubmitting}
+                >
                   Save
                 </Button>
               </DialogActions>

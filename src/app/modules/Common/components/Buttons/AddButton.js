@@ -1,11 +1,17 @@
 /* eslint-disable no-restricted-imports */
 import React from "react";
 import Button from "@material-ui/core/Button";
-import AddIcon from "@material-ui/icons/Add";
+import { ControlPoint } from "@material-ui/icons";
 
 function AddButton(props) {
   return (
-    <Button {...props} variant="contained" startIcon={<AddIcon />}>
+    <Button
+      {...props}
+      fullWidth
+      variant="contained"
+      color="primary"
+      startIcon={<ControlPoint />}
+    >
       {props.children}
     </Button>
   );
