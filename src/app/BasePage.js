@@ -17,6 +17,7 @@ import NewEmployee from "./modules/_EmployeeDemo/pages/NewEmployee";
 import EmployeeList from "./modules/_EmployeeDemo/pages/EmployeeList";
 
 import ProductGroupPage from "./modules/ProductGroup/pages/ProductGroupPage";
+import ProductPage from "./modules/Product/pages/ProductPage";
 
 export default function BasePage(props) {
   // useEffect(() => {
@@ -46,6 +47,7 @@ export default function BasePage(props) {
         <ContentRoute exact path="/employee/edit/:id" component={NewEmployee} />
 
         <ContentRoute exact path="/productgroup" component={ProductGroupPage} />
+        <ContentRoute exact path="/product" component={ProductPage} />
         <PrivateRoute
           exact
           path="/test"

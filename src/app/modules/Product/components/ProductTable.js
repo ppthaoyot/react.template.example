@@ -11,12 +11,12 @@ import {
   CardContent,
 } from "@material-ui/core";
 import { Block, CheckCircle } from "@material-ui/icons";
-import * as productGroupAxios from "../_redux/productGroupAxios";
+import * as productAxios from "../../Product/_redux/productAxios";
 import * as swal from "../../Common/components/SweetAlert";
-import ProductGroupSearch from "./ProductGroupSearch";
-import ProductGroupAdd from "../components/ProductGroupAdd";
-import ProductGroupDelete from "../components/ProductGroupDelete";
-import ProductGroupEdit from "../components/ProductGroupEdit";
+import ProductSearch from "../../Product/components/ProductSearch";
+import ProductAdd from "../../Product/components/ProductAdd";
+import ProductDelete from "../../Product/components/ProductDelete";
+import ProductEdit from "../../Product/components/ProductEdit";
 import AddButton from "../../Common/components/Buttons/AddButton";
 import EditButton from "../../Common/components/Buttons/EditButton";
 import DeleteButton from "../../Common/components/Buttons/DeleteButton";
@@ -26,7 +26,7 @@ require("dayjs/locale/th");
 var dayjs = require("dayjs");
 dayjs.locale("th");
 
-function ProductGroupTable(props) {
+function ProductTable(props) {
   const [filter, setFilter] = React.useState({
     page: 1,
     recordsPerPage: 10,
@@ -40,8 +40,8 @@ function ProductGroupTable(props) {
   const [totalRecords, setTotalRecords] = React.useState(0);
   const [data, setData] = React.useState([]);
   const [isLoading, setIsLoading] = React.useState(true);
-  const [productGroupIdEdit, setProductGroupIdEdit] = useState(0);
-  const [productGroupIdDelete, setProductGroupIdDelete] = useState(0);
+  const [productIdEdit, setProductIdEdit] = useState(0);
+  const [productIdDelete, setProductIdDelete] = useState(0);
   const [openModal, setOpenModel] = useState(false);
 
   React.useEffect(() => {
@@ -61,11 +61,11 @@ function ProductGroupTable(props) {
   };
 
   const handleEdit = (id) => {
-    setProductGroupIdEdit(id);
+    setProductIdEdit(id);
   };
 
   const handleDelete = (id) => {
-    setProductGroupIdDelete(id);
+    setProductIdDelete(id);
   };
 
   const handleReset = (value) => {
@@ -74,10 +74,10 @@ function ProductGroupTable(props) {
         setOpenModel(false);
         break;
       case "FROM_EDIT_RESET":
-        setProductGroupIdEdit(0);
+        setProductIdEdit(0);
         break;
       case "FROM_DELETE_RESET":
-        setProductGroupIdDelete(0);
+        setProductIdDelete(0);
         break;
       default:
         break;
@@ -111,8 +111,36 @@ function ProductGroupTable(props) {
       },
     },
     {
+      name: "productGroupId",
+      label: "Group",
+      option: {
+        sort: false,
+      },
+    },
+    {
       name: "name",
       label: "Name",
+      option: {
+        sort: false,
+      },
+    },
+    {
+      name: "price",
+      label: "Price",
+      option: {
+        sort: false,
+      },
+    },
+    {
+      name: "name",
+      label: "Name",
+      option: {
+        sort: false,
+      },
+    },
+    {
+      name: "stock",
+      label: "Stock",
       option: {
         sort: false,
       },
@@ -218,8 +246,8 @@ function ProductGroupTable(props) {
 
   const loadData = () => {
     setIsLoading(true);
-    productGroupAxios
-      .getProductGroupFilter(
+    productAxios
+      .getProductFilter(
         filter.orderingField,
         filter.ascendingOrder,
         filter.page,
@@ -291,10 +319,10 @@ function ProductGroupTable(props) {
         <CardContent>
           <Grid container spacing={3}>
             <Grid item xs={12} lg={6}>
-              <ProductGroupSearch
+              <ProductSearch
                 returnvalue={handleSearch.bind(this)}
                 name={filter.searchValues.name}
-              ></ProductGroupSearch>
+              ></ProductSearch>
             </Grid>
             <Grid
               container
@@ -322,7 +350,7 @@ function ProductGroupTable(props) {
       <MUIDataTable
         title={
           <Typography variant="h6">
-            ProductGroup
+            Product
             {isLoading && (
               <CircularProgress
                 size={24}
@@ -335,25 +363,25 @@ function ProductGroupTable(props) {
         columns={columns}
         options={options}
       />
-      <ProductGroupAdd
+      <ProductAdd
         modal={openModal}
         returnvalue={handleReload.bind(this)}
         reset={handleReset.bind(this)}
-      ></ProductGroupAdd>
+      ></ProductAdd>
 
-      <ProductGroupEdit
-        productgroupid={productGroupIdEdit}
+      <ProductEdit
+        productid={productIdEdit}
         returnvalue={handleReload.bind(this)}
         reset={handleReset.bind(this)}
-      ></ProductGroupEdit>
+      ></ProductEdit>
 
-      <ProductGroupDelete
-        productgroupid={productGroupIdDelete}
+      <ProductDelete
+        productid={productIdDelete}
         returnvalue={handleReload.bind(this)}
         reset={handleReset.bind(this)}
-      ></ProductGroupDelete>
+      ></ProductDelete>
     </div>
   );
 }
 
-export default ProductGroupTable;
+export default ProductTable;

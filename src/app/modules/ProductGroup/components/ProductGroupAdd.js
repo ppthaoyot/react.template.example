@@ -14,7 +14,6 @@ import * as productGroupRedux from "../_redux/productGroupRedux";
 import * as productGroupAxios from "../_redux/productGroupAxios";
 
 function ProductGroupAdd(props) {
-  debugger;
   const dispatch = useDispatch();
   const [open, setOpen] = React.useState(false);
   const productGroupReducer = useSelector(({ productGroup }) => productGroup);
@@ -34,7 +33,7 @@ function ProductGroupAdd(props) {
             .swalSuccess("Add Completed", `Add id: ${response.data.data.id}`)
             .then(() => {
               dispatch(productGroupRedux.actions.resetCurrentProductGroup());
-              props.submit("FROM_ADD_SUBMIT");
+              props.returnvalue("FROM_ADD_SUBMIT");
             });
         } else {
           swal.swalError("Error", response.data.message);

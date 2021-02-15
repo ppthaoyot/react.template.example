@@ -16,32 +16,41 @@ import {
 import { Formik, Form, Field } from "formik";
 import { TextField, Select } from "formik-material-ui";
 import * as swal from "../../Common/components/SweetAlert";
-import * as productGroupRedux from "../_redux/productGroupRedux";
-import * as productGroupAxios from "../_redux/productGroupAxios";
+import * as productRedux from "../../Product/_redux/productRedux";
+import * as productAxios from "../../Product/_redux/productAxios";
+import * as productGroupAxios from "../../ProductGroup/_redux/productGroupAxios";
 
-function ProductGroupEdit(props) {
+function ProductEdit(props) {
   const dispatch = useDispatch();
   const [open, setOpen] = React.useState(false);
   const [data, setData] = React.useState({
     name: "",
+    price: false,
+    stock: false,
+    productGroupId: false,
     isActive: false,
   });
-  const productGroupReducer = useSelector(({ productGroup }) => productGroup);
+  const [productGroupList, setProductGroupList] = React.useState([]);
+  const productReducer = useSelector(({ product }) => product);
 
   React.useEffect(() => {
-    if (props.productgroupid !== 0) {
+    if (props.productid !== 0) {
+      handleGetProductGroup();
       handleGet();
     }
-  }, [props.productgroupid]);
+  }, [props.productid]);
 
   const handleGet = () => {
-    productGroupAxios
-      .getProductGroup(props.productgroupid)
+    productAxios
+      .getProduct(props.productid)
       .then((response) => {
         if (response.data.isSuccess) {
           setData({
             ...data,
             name: response.data.data.name,
+            price: response.data.data.price,
+            stock: response.data.data.stock,
+            productGroupId: response.data.data.productGroupId,
             isActive: response.data.data.isActive,
           });
         } else {
@@ -57,15 +66,15 @@ function ProductGroupEdit(props) {
   };
 
   const handleUpdate = (payload, { setSubmitting }) => {
-    productGroupAxios
-      .updateProductGroup(props.productgroupid, payload)
+    productAxios
+      .updateProduct(props.productid, payload)
       .then((response) => {
         if (response.data.isSuccess) {
           swal
             .swalSuccess("Update Completed", `id: ${response.data.data.id}`)
             .then(() => {
               setSubmitting(false);
-              dispatch(productGroupRedux.actions.resetCurrentProductGroup());
+              dispatch(productRedux.actions.resetCurrentProduct());
             });
           props.returnvalue("FROM_EDIT_SUBMIT");
         } else {
@@ -79,6 +88,24 @@ function ProductGroupEdit(props) {
       })
       .finally(() => {
         handleClose();
+      });
+  };
+
+  const handleGetProductGroup = () => {
+    productGroupAxios
+      .getProductGroupAll()
+      .then((res) => {
+        //bind data
+        if (res.data.isSuccess) {
+          setProductGroupList(res.data.data);
+        } else {
+          //internal error
+          swal.swalError("Error", res.data.message);
+        }
+      })
+      .catch((err) => {
+        //physical error
+        swal.swalError("Error", err.message);
       });
   };
 
@@ -97,6 +124,9 @@ function ProductGroupEdit(props) {
         enableReinitialize
         initialValues={{
           name: data.name,
+          price: data.price,
+          stock: data.stock,
+          productGroupId: data.productGroupId,
           isActive: data.isActive,
         }}
         validate={(values) => {
@@ -108,8 +138,11 @@ function ProductGroupEdit(props) {
         }}
         onSubmit={(values, { setSubmitting, resetForm }) => {
           let payload = {
-            ...productGroupReducer.currentProductGroupToAdd,
+            ...productReducer.currentProductToAdd,
             name: values.name,
+            price: values.price,
+            stock: values.stock,
+            productGroupId: values.productGroupId,
             isActive: values.isActive,
           };
           setSubmitting(true);
@@ -132,9 +165,7 @@ function ProductGroupEdit(props) {
               onClose={handleClose}
               aria-labelledby="form-dialog-title"
             >
-              <DialogTitle id="form-dialog-title">
-                Edit ProductGroup
-              </DialogTitle>
+              <DialogTitle id="form-dialog-title">Edit Product</DialogTitle>
               <DialogContent>
                 <Grid container spacing={3}>
                   <Grid item xs={12} lg={12}>
@@ -149,6 +180,57 @@ function ProductGroupEdit(props) {
                       value={values.name}
                       onChange={(e) => setFieldValue("name", e.target.value)}
                     />
+                  </Grid>
+                  <Grid item xs={12} lg={12}>
+                    <Field
+                      fullWidth
+                      component={TextField}
+                      required
+                      type="text"
+                      label="Price"
+                      name="price"
+                      value={values.price}
+                      onChange={(e) => setFieldValue("price", e.target.value)}
+                    />
+                  </Grid>
+                  <Grid item xs={12} lg={12}>
+                    <Field
+                      fullWidth
+                      component={TextField}
+                      required
+                      disabled
+                      type="text"
+                      label="Stock"
+                      name="stock"
+                      value={values.stock}
+                      onChange={(e) => setFieldValue("stock", e.target.value)}
+                    />
+                  </Grid>
+                  <Grid item xs={12} lg={12}>
+                    <FormControl fullWidth>
+                      <InputLabel id="status-label">ProductGroup</InputLabel>
+                      <Field
+                        fullWidth
+                        component={Select}
+                        inputProps={{
+                          id: "productgroup-label",
+                        }}
+                        name="productgroup"
+                        value={values.productGroupId}
+                        onChange={(event) => {
+                          setFieldValue("productgroup", event.target.value);
+                        }}
+                      >
+                        {productGroupList.map((item) => (
+                          <MenuItem
+                            key={`productgroup_${item.id}`}
+                            value={item.id}
+                          >
+                            {item.name}
+                          </MenuItem>
+                        ))}
+                      </Field>
+                    </FormControl>
                   </Grid>
                   <Grid item xs={12} lg={12}>
                     <FormControl fullWidth>
@@ -200,4 +282,4 @@ function ProductGroupEdit(props) {
   );
 }
 
-export default ProductGroupEdit;
+export default ProductEdit;

@@ -2,14 +2,14 @@
 /* eslint-disable no-restricted-imports */
 import React from "react";
 import * as swal from "../../Common/components/SweetAlert";
-import * as productGroupAxios from "../_redux/productGroupAxios";
+import * as productAxios from "../../Product/_redux/productAxios";
 
-function ProductGroupDelete(props) {
+function ProductDelete(props) {
   React.useEffect(() => {
-    if (props.productgroupid !== 0) {
+    if (props.productid !== 0) {
       handleDelete();
     }
-  }, [props.productgroupid]);
+  }, [props.productid]);
 
   const handleDelete = () => {
     swal.swalConfirm("Confirm Delete?", "").then((sw) => {
@@ -22,9 +22,9 @@ function ProductGroupDelete(props) {
   };
 
   const Delete = () => {
-    let id = props.productgroupid;
-    productGroupAxios
-      .deleteProductGroup(id)
+    let id = props.productid;
+    productAxios
+      .deleteProduct(id)
       .then((response) => {
         if (response.data.isSuccess) {
           swal
@@ -49,4 +49,4 @@ function ProductGroupDelete(props) {
   return <div></div>;
 }
 
-export default ProductGroupDelete;
+export default ProductDelete;

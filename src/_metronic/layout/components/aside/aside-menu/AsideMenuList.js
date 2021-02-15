@@ -312,6 +312,19 @@ export function AsideMenuList({ layoutProps }) {
             </NavLink>
           </li>
           {/*End::1 Product Group*/}
+          {/*Product Group*/}
+          <li
+            className={`menu-item ${getMenuItemActive("/product", false)}`}
+            aria-haspopup="true"
+          >
+            <NavLink className="menu-link" to="/product">
+              <span className="svg-icon menu-icon">
+                <Icon>supervisor_account</Icon>
+              </span>
+              <span className="menu-text">Product</span>
+            </NavLink>
+          </li>
+          {/*End::1 Product Group*/}
         </>
         {/* End Demo สามารถ comment ทิ้งได้ */}
       </ul>

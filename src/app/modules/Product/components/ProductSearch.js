@@ -7,7 +7,7 @@ import { TextField } from "formik-material-ui";
 import { Search } from "@material-ui/icons";
 import { Button, LinearProgress, Grid, Typography } from "@material-ui/core";
 
-function ProductGroupSearch(props) {
+function ProductSearch(props) {
   return (
     <Formik
       enableReinitialize
@@ -70,4 +70,4 @@ function ProductGroupSearch(props) {
   );
 }
 
-export default ProductGroupSearch;
+export default ProductSearch;
