@@ -25,9 +25,9 @@ function ProductEdit(props) {
   const [open, setOpen] = React.useState(false);
   const [data, setData] = React.useState({
     name: "",
-    price: false,
-    stock: false,
-    productGroupId: false,
+    price: 0,
+    stock: 0,
+    productGroupId: 0,
     isActive: false,
   });
   const [productGroupList, setProductGroupList] = React.useState([]);
@@ -50,7 +50,7 @@ function ProductEdit(props) {
             name: response.data.data.name,
             price: response.data.data.price,
             stock: response.data.data.stock,
-            productGroupId: response.data.data.productGroupId,
+            productGroupId: response.data.data.productGroup.id,
             isActive: response.data.data.isActive,
           });
         } else {
@@ -66,18 +66,23 @@ function ProductEdit(props) {
   };
 
   const handleUpdate = (payload, { setSubmitting }) => {
+    debugger;
     productAxios
       .updateProduct(props.productid, payload)
       .then((response) => {
+        debugger;
         if (response.data.isSuccess) {
+          debugger;
           swal
             .swalSuccess("Update Completed", `id: ${response.data.data.id}`)
             .then(() => {
+              debugger;
               setSubmitting(false);
               dispatch(productRedux.actions.resetCurrentProduct());
             });
           props.returnvalue("FROM_EDIT_SUBMIT");
         } else {
+          debugger;
           setSubmitting(false);
           swal.swalError("Error", response.data.message);
         }
@@ -203,7 +208,9 @@ function ProductEdit(props) {
                       label="Stock"
                       name="stock"
                       value={values.stock}
-                      onChange={(e) => setFieldValue("stock", e.target.value)}
+                      onChange={(e) =>
+                        setFieldValue(e.target.name, e.target.value)
+                      }
                     />
                   </Grid>
                   <Grid item xs={12} lg={12}>
@@ -215,10 +222,10 @@ function ProductEdit(props) {
                         inputProps={{
                           id: "productgroup-label",
                         }}
-                        name="productgroup"
+                        name="productGroupId"
                         value={values.productGroupId}
-                        onChange={(event) => {
-                          setFieldValue("productgroup", event.target.value);
+                        onChange={(e) => {
+                          setFieldValue(e.target.name, e.target.value);
                         }}
                       >
                         {productGroupList.map((item) => (
@@ -243,8 +250,8 @@ function ProductEdit(props) {
                         }}
                         name="isActive"
                         value={values.isActive}
-                        onChange={(event) => {
-                          setFieldValue("isActive", event.target.value);
+                        onChange={(e) => {
+                          setFieldValue(e.target.name, e.target.value);
                         }}
                       >
                         <MenuItem key={0} value={true}>

@@ -111,7 +111,7 @@ function ProductTable(props) {
       },
     },
     {
-      name: "productGroupId",
+      name: "productGroup.name",
       label: "Group",
       option: {
         sort: false,
@@ -146,7 +146,7 @@ function ProductTable(props) {
       },
     },
     {
-      name: "createdById",
+      name: "createdBy.username",
       label: "CreatedBy",
       option: {
         sort: false,

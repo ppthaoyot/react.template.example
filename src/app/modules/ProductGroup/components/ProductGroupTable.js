@@ -106,23 +106,20 @@ function ProductGroupTable(props) {
     {
       name: "id",
       label: "Id",
-      option: {
-        sort: false,
-      },
     },
     {
       name: "name",
       label: "Name",
-      option: {
+      options: {
         sort: false,
       },
     },
     {
-      name: "createdById",
+      name: "createdBy.username",
       label: "CreatedBy",
-      option: {
-        sort: false,
-      },
+      // options: {
+      //   sort: false,
+      // },
     },
     {
       name: "createdDate",
@@ -227,6 +224,7 @@ function ProductGroupTable(props) {
         filter.searchValues.name
       )
       .then((res) => {
+        debugger;
         if (res.data.isSuccess) {
           //flatten data
           if (res.data.totalAmountRecords > 0) {
